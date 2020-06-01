@@ -1,0 +1,31 @@
+OrdererOrgs:
+    - Name: Orderer
+      Domain: anvisa.gov.br
+      Specs:
+        - Hostname: orderer
+
+PeerOrgs:
+    - Name: Industry
+      Domain: industry.anvisa.gov.br
+      Template:
+        Count: 2 # two peers
+      Users:
+        Count: 1 # 1 user account in addition to admin
+    - Name: Provider
+      Domain: provider.anvisa.gov.br
+      Template:
+        Count: 2
+      Users:
+        Count: 1
+    - Name: Dugstore
+      Domain: dugstore.anvisa.gov.br
+      Template:
+        Count: 2
+      Users:
+        Count: 1
+    - Name: Buyer
+      Domain: buyer.anvisa.gov.br
+      Template:
+        Count: 2
+      Users:
+        Count: 1
