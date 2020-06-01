@@ -17,8 +17,8 @@ PeerOrgs:
         Count: 2
       Users:
         Count: 1
-    - Name: Dugstore
-      Domain: dugstore.anvisa.gov.br
+    - Name: Drugstore
+      Domain: drugstore.anvisa.gov.br
       Template:
         Count: 2
       Users:
