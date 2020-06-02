@@ -1,4 +1,4 @@
-../../../bin/configtxgen -profile GenesisBlockGeneration -outputAnchorPeersUpdate ../artifacts/channel/IndustryAnchor.tx -channelID channelorderergenesis -asOrg IndustryMSP
-../../../bin/configtxgen -profile GenesisBlockGeneration -outputAnchorPeersUpdate ../artifacts/channel/ProviderAnchor.tx -channelID channelorderergenesis -asOrg ProviderMSP
-../../../bin/configtxgen -profile GenesisBlockGeneration -outputAnchorPeersUpdate ../artifacts/channel/DrugstoreAnchor.tx -channelID channelorderergenesis -asOrg DrugstoreMSP
-../../../bin/configtxgen -profile GenesisBlockGeneration -outputAnchorPeersUpdate ../artifacts/channel/BuyerAnchor.tx -channelID channelorderergenesis -asOrg BuyerMSP
+../../../bin/configtxgen -profile ChannelCreation -outputAnchorPeersUpdate ../artifacts/channel/IndustryAnchor.tx -channelID channelcreation -asOrg IndustryMSP
+../../../bin/configtxgen -profile ChannelCreation -outputAnchorPeersUpdate ../artifacts/channel/ProviderAnchor.tx -channelID channelcreation -asOrg ProviderMSP
+../../../bin/configtxgen -profile ChannelCreation -outputAnchorPeersUpdate ../artifacts/channel/DrugstoreAnchor.tx -channelID channelcreation -asOrg DrugstoreMSP
+../../../bin/configtxgen -profile ChannelCreation -outputAnchorPeersUpdate ../artifacts/channel/BuyerAnchor.tx -channelID channelcreation -asOrg BuyerMSP
