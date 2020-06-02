@@ -10,7 +10,7 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca-provider
     ports:
       - "8054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/ca.provider.anvisa.gov.br-cert.pem --ca.keyfile /etc/hyperledger/95cfabc4856bf4ff8efb051100d9116737de2701b8450eabd123f87fb83799c7_sk -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/ca.provider.anvisa.gov.br-cert.pem --ca.keyfile /etc/hyperledger/d02905a1eedf44cfd7abb9e1e82fc0dd2b923ed8d60aacab413ddc476c33194d_sk -b admin:adminpw -d'
     volumes:
       - ../artifacts/certs/peerOrganizations/provider.anvisa.gov.br/ca:/etc/hyperledger
 

@@ -10,7 +10,7 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca-drugstore
     ports:
       - "9054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/ca.drugstore.anvisa.gov.br-cert.pem --ca.keyfile /etc/hyperledger/3716cfca559766722a6daeabc08f2f2c273e134ee60a7fc3ced42df408d9a3b3_sk -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/ca.drugstore.anvisa.gov.br-cert.pem --ca.keyfile /etc/hyperledger/bfb857049cf12efd8b52ba0c112413013d82404bf405bfeb0d56235da3e040e0_sk -b admin:adminpw -d'
     volumes:
       - ../artifacts/certs/peerOrganizations/drugstore.anvisa.gov.br/ca:/etc/hyperledger
 
