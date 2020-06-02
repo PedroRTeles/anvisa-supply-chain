@@ -1,0 +1,73 @@
+version: '2'
+
+services:
+  ca:
+    container_name: ca.buyer.anvisa.gov.br
+    extends:
+      file: base.yaml
+      service: ca-base
+    environment:
+      - FABRIC_CA_SERVER_CA_NAME=ca-buyer
+    ports:
+      - "10054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/ca.buyer.anvisa.gov.br-cert.pem --ca.keyfile /etc/hyperledger/8cd3d9a5696fc5f5b1345fecdce3fb1f73d9253887a561041f83833ca4ccbd85_sk -b admin:adminpw -d'
+    volumes:
+      - ../artifacts/certs/peerOrganizations/buyer.anvisa.gov.br/ca:/etc/hyperledger
+
+
+  peer0-db:
+    container_name: peer0-db.buyer.anvisa.gov.br
+    image: hyperledger/fabric-couchdb
+    environment:
+      - COUCHDB_USER=buyerpeer0admin
+      - COUCHDB_PASSWORD=pass
+
+  peer1-db:
+    container_name: peer1-db.buyer.anvisa.gov.br
+    image: hyperledger/fabric-couchdb
+    environment:
+      - COUCHDB_USER=buyerpeer1admin
+      - COUCHDB_PASSWORD=pass
+
+
+  peer0:
+    container_name: peer0.buyer.anvisa.gov.br
+    extends:
+      file: base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.buyer.anvisa.gov.br
+      - CORE_PEER_ADDRESS=peer0.buyer.anvisa.gov.br:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.buyer.anvisa.gov.br:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.buyer.anvisa.gov.br:7051
+      - CORE_PEER_LOCALMSPID=BuyerMSP
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=peer0-db.buyer.anvisa.gov.br:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=buyerpeer0admin
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=pass
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../artifacts/certs/peerOrganizations/buyer.anvisa.gov.br/peers/peer0.buyer.anvisa.gov.br/msp:/etc/hyperledger/fabric/msp
+    ports:
+      - 13051:7051
+      - 13053:7053
+
+  peer1:
+    container_name: peer1.buyer.anvisa.gov.br
+    extends:
+      file: base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.buyer.anvisa.gov.br
+      - CORE_PEER_ADDRESS=peer1.buyer.anvisa.gov.br:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.buyer.anvisa.gov.br:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.buyer.anvisa.gov.br:7051
+      - CORE_PEER_LOCALMSPID=BuyerMSP
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=peer1-db.buyer.anvisa.gov.br:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=buyerpeer1admin
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=pass
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../artifacts/certs/peerOrganizations/buyer.anvisa.gov.br/peers/peer1.buyer.anvisa.gov.br/msp:/etc/hyperledger/fabric/msp
+    ports:
+      - 14051:7051
+      - 14053:7053

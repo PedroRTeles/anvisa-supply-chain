@@ -1,0 +1,72 @@
+version: '2'
+
+services:
+  ca:
+    container_name: ca.industry.anvisa.gov.br
+    extends:
+      file: base.yaml
+      service: ca-base
+    environment:
+      - FABRIC_CA_SERVER_CA_NAME=ca-industry
+    ports:
+      - "7054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/ca.industry.anvisa.gov.br-cert.pem --ca.keyfile /etc/hyperledger/8506c008840a74878609f82716d133796aa84a11a7c609d508aa15a4e05fe996_sk -b admin:adminpw -d'
+    volumes:
+      - ../artifacts/certs/peerOrganizations/industry.anvisa.gov.br/ca:/etc/hyperledger
+
+
+  peer0-db:
+    container_name: peer0-db.industry.anvisa.gov.br
+    image: hyperledger/fabric-couchdb
+    environment:
+      - COUCHDB_USER=industrypeer0admin
+      - COUCHDB_PASSWORD=pass
+
+  peer1-db:
+    container_name: peer1-db.industry.anvisa.gov.br
+    image: hyperledger/fabric-couchdb
+    environment:
+      - COUCHDB_USER=industrypeer1admin
+      - COUCHDB_PASSWORD=pass
+
+
+  peer0:
+    container_name: peer0.industry.anvisa.gov.br
+    extends:
+      file: base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.industry.anvisa.gov.br
+      - CORE_PEER_ADDRESS=peer0.industry.anvisa.gov.br:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.industry.anvisa.gov.br:7051
+      - CORE_PEER_LOCALMSPID=IndustryMSP
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=peer0-db.industry.anvisa.gov.br:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=industrypeer0admin
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=pass
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../artifacts/certs/peerOrganizations/industry.anvisa.gov.br/peers/peer0.industry.anvisa.gov.br/msp:/etc/hyperledger/fabric/msp
+    ports:
+      - 7051:7051
+      - 7053:7053
+
+  peer1:
+    container_name: peer1.industry.anvisa.gov.br
+    extends:
+      file: base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.industry.anvisa.gov.br
+      - CORE_PEER_ADDRESS=peer1.industry.anvisa.gov.br:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.industry.anvisa.gov.br:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.industry.anvisa.gov.br:7051
+      - CORE_PEER_LOCALMSPID=IndustryMSP
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=peer1-db.industry.anvisa.gov.br:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=industrypeer1admin
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=pass
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../artifacts/certs/peerOrganizations/industry.anvisa.gov.br/peers/peer1.industry.anvisa.gov.br/msp:/etc/hyperledger/fabric/msp
+    ports:
+      - 8051:7051
+      - 8053:7053

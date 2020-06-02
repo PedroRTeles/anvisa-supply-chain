@@ -1,0 +1,207 @@
+version: '2'
+
+networks:
+  anvisa:
+
+services:
+  orderer.anvisa.gov.br:
+    extends:
+      file:   base.yaml
+      service: orderer
+    networks:
+      - anvisa
+
+  ### Industry ###
+  ca.industry.anvisa.gov.br:
+    extends:
+      file:  industry.yaml
+      service: ca
+    networks:
+      - anvisa
+
+  peer0-db.industry.anvisa.gov.br:
+    extends:
+      file: industry.yaml
+      service: peer0-db
+    networks:
+      - anvisa
+
+  peer1-db.industry.anvisa.gov.br:
+    extends:
+      file: industry.yaml
+      service: peer1-db
+    networks:
+      - anvisa
+
+  peer0.industry.anvisa.gov.br:
+    extends:
+      file:  industry.yaml
+      service: peer0
+    networks:
+      - anvisa
+    depends_on:
+      - peer0-db.industry.anvisa.gov.br
+
+  peer1.industry.anvisa.gov.br:
+    extends:
+      file:  industry.yaml
+      service: peer1
+    networks:
+      - anvisa
+    depends_on:
+      - peer1-db.industry.anvisa.gov.br
+
+  ### Provider ###
+  ca.provider.anvisa.gov.br:
+    extends:
+      file:  provider.yaml
+      service: ca
+    networks:
+      - anvisa
+
+  peer0-db.provider.anvisa.gov.br:
+    extends:
+      file: provider.yaml
+      service: peer0-db
+    networks:
+      - anvisa
+
+  peer1-db.provider.anvisa.gov.br:
+    extends:
+      file: provider.yaml
+      service: peer1-db
+    networks:
+      - anvisa
+
+  peer0.provider.anvisa.gov.br:
+    extends:
+      file:  provider.yaml
+      service: peer0
+    networks:
+      - anvisa
+    depends_on:
+      - peer0-db.provider.anvisa.gov.br
+
+  peer1.provider.anvisa.gov.br:
+    extends:
+      file:  provider.yaml
+      service: peer1
+    networks:
+      - anvisa
+    depends_on:
+      - peer1-db.provider.anvisa.gov.br
+
+  ### Drugstore ###
+  ca.drugstore.anvisa.gov.br:
+    extends:
+      file: drugstore.yaml
+      service: ca
+    networks:
+      - anvisa
+
+  peer0-db.drugstore.anvisa.gov.br:
+    extends:
+      file: drugstore.yaml
+      service: peer0-db
+    networks:
+      - anvisa
+
+  peer1-db.drugstore.anvisa.gov.br:
+    extends:
+      file: drugstore.yaml
+      service: peer1-db
+    networks:
+      - anvisa
+
+  peer0.drugstore.anvisa.gov.br:
+    extends:
+      file: drugstore.yaml
+      service: peer0
+    networks:
+      - anvisa
+    depends_on:
+      - peer0-db.drugstore.anvisa.gov.br
+
+  peer1.drugstore.anvisa.gov.br:
+    extends:
+      file: drugstore.yaml
+      service: peer1
+    networks:
+      - anvisa
+    depends_on:
+      - peer1-db.drugstore.anvisa.gov.br
+
+  ### Buyer ###
+  ca.buyer.anvisa.gov.br:
+    extends:
+      file: buyer.yaml
+      service: ca
+    networks:
+      - anvisa
+
+  peer0-db.buyer.anvisa.gov.br:
+    extends:
+      file: buyer.yaml
+      service: peer0-db
+    networks:
+      - anvisa
+
+  peer1-db.buyer.anvisa.gov.br:
+    extends:
+      file: buyer.yaml
+      service: peer1-db
+    networks:
+      - anvisa
+
+  peer0.buyer.anvisa.gov.br:
+    extends:
+      file: buyer.yaml
+      service: peer0
+    networks:
+      - anvisa
+    depends_on:
+      - peer0-db.buyer.anvisa.gov.br
+
+  peer1.buyer.anvisa.gov.br:
+    extends:
+      file: buyer.yaml
+      service: peer1
+    networks:
+      - anvisa
+    depends_on:
+      - peer1-db.buyer.anvisa.gov.br
+
+
+  cli:
+    container_name: cli
+    image: hyperledger/fabric-tools
+    tty: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_LOGGING_LEVEL=DEBUG
+      - CORE_PEER_ID=cli
+      - CORE_PEER_ADDRESS=
+      - CORE_PEER_LOCALMSPID=
+      - CORE_PEER_MSPCONFIGPATH=
+    working_dir: /opt/gopath
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../artifacts:/opt/gopath/artifacts/
+        - ../createChannel.sh:/opt/gopath/createChannel.sh
+    depends_on:
+      - orderer.anvisa.gov.br
+      - ca.industry.anvisa.gov.br
+      - peer0.industry.anvisa.gov.br
+      - peer1.industry.anvisa.gov.br
+      - ca.provider.anvisa.gov.br
+      - peer0.provider.anvisa.gov.br
+      - peer1.provider.anvisa.gov.br
+      - ca.drugstore.anvisa.gov.br
+      - peer0.drugstore.anvisa.gov.br
+      - peer1.drugstore.anvisa.gov.br
+      - ca.buyer.anvisa.gov.br
+      - peer0.buyer.anvisa.gov.br
+      - peer1.buyer.anvisa.gov.br
+    networks:
+      - anvisa
