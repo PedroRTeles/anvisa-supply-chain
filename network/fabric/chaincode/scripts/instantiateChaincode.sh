@@ -3,6 +3,6 @@ export ORDERER_CA=/opt/gopath/artifacts/certs/ordererOrganizations/anvisa.gov.br
 
 export COMPOSE_PROJECT_NAME=anvisa
 
-peer chaincode instantiate -o orderer.anvisa.gov.br:7050 --tls true --cafile $ORDERER_CA -C channelcreation -l node -n batchcc -v 1.0 -c '{"Args":[]}' >&log.txt
+peer chaincode instantiate -o orderer.anvisa.gov.br:7050 --tls true --cafile $ORDERER_CA -C channelcreation -P "AND ('IndustryMSP.peer','ProviderMSP.peer','DrugstoreMSP.peer', 'BuyerMSP.peer')" -l node -n batchcc -v 1.0 -c '{"Args":[]}' >&log.txt
 
 cat log.txt
