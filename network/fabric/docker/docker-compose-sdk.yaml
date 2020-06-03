@@ -189,6 +189,7 @@ services:
         - /var/run/:/host/var/run/
         - ../artifacts:/opt/gopath/artifacts/
         - ../createChannel.sh:/opt/gopath/createChannel.sh
+        - ../chaincode:/opt/gopath/chaincode/
     depends_on:
       - orderer.anvisa.gov.br
       - ca.industry.anvisa.gov.br
